@@ -1,0 +1,140 @@
+"" --------------------------- Vundle configuration ---------------------------
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+"set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+"" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+"
+"" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+"The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" GIT tools
+Plugin 'tpope/vim-fugitive'
+" NerdTree
+" Plugin 'scrooloose/nerdtree'
+" vim-colors-solarized
+" Plugin 'altercation/vim-colors-solarized'
+" vim-rails
+Plugin 'tpope/vim-rails'
+" https://github.com/vim-ruby/vim-ruby
+Plugin 'vim-ruby/vim-ruby'
+" vim-bundler
+Plugin 'tpope/vim-bundler'
+" https://github.com/vim-airline/vim-airline
+" => good looking bottom :)
+Plugin 'vim-airline/vim-airline'
+" https://github.com/tomtom/tcomment_vim
+" => create comments or block comments
+" => gcc, gc, g>b
+Plugin 'tomtom/tcomment_vim'
+" https://github.com/tomasr/molokai new theme for the termnal
+Plugin 'tomasr/molokai'
+" https://github.com/tpope/vim-surround
+" => mappings to easily delete change and add such surroundings in pairs.
+" cs, ds, yssb, VS
+Plugin 'tpope/vim-surround'
+" https://github.com/jiangmiao/auto-pairs.
+" => Every one should have a pair (Atogenerate pairs for "{[(
+Plugin 'jiangmiao/auto-pairs'
+" https://github.com/StanAngeloff/php.vim
+" => php Highlighting
+Plugin 'StanAngeloff/php.vim'
+" plugin dependences for php complete
+" https://github.com/m2mdas/phpcomplete-extended
+Bundle 'Shougo/vimproc.vim'
+Bundle 'Shougo/unite.vim'
+Bundle 'm2mdas/phpcomplete-extended'
+" plugin fuzzyfinder faster way to open files
+" https://github.com/ctrlpvim/ctrlp.vim.git
+Bundle 'ctrlpvim/ctrlp.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+ " To ignore plugin indent changes, instead use:
+ "filetype plugin on
+ "
+ " Brief help
+ " :PluginList       - lists configured plugins
+ " :PluginInstall    - installs plugins; append `!` to update or just
+ ":PluginUpdate
+ " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+ " :PluginClean      - confirms removal of unused plugins; append `!` to
+ "auto-approve removal
+ "
+ " see :h vundle for more details or wiki for FAQ
+ " Put your non-Plugin stuff after this line
+
+
+ " --------------- PERSONAL CONFIGURATION FOR VIM ---------------
+  " PATHOGEN
+  execute pathogen#infect()
+  syntax on
+  filetype plugin indent on
+
+ " --------------- NERDTree CONFIGURATION FOR VIM ---------------
+  autocmd vimenter * NERDTree
+  let g:NERDTreeDirArrows=0
+
+ " --------------- TABS CONFIGURATION  ---------------
+  set tabstop=2 shiftwidth=2 expandtab
+  autocmd Filetype python setlocal ts=2 sts=2 sw=2
+
+ " --------------- REMOVE TRAILING WHITE SPACES  ---------------
+  if has("autocmd")
+    autocmd BufWritePre * :%s/\s\+$//e
+  endif
+
+ " --------------- THEME CONFIGURATION JUST FOR GUI MODE  ---------------
+  " if has('gui_running')
+  " endif
+
+  " look configuration for the theme ----------------
+  let g:airline#extensions#tabline#enabled=1
+  set nu
+  set laststatus=2 " configure airline to appear on each buffer
+
+  " color solarized configuration ----------------
+  syntax enable
+  set background=light
+  " set background=dark
+  let g:solarized_termcolors=256
+  colorscheme solarized
+  " molkai theme configuration ----------------
+  " let g:rehash256 = 1
+  " let g:molokai_original = 1
+  " colorscheme molokai
+
+ " --------------- THEME CONFIGURATION JUST FOR GUI MODE  ---------------
+ "  Exclude files and directories using Vim's wildignore and CtrlP's own
+ "  g:ctrlp_custom_ignore. If a custom listing command is being used,
+ "  exclusions are ignored:
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+" let g:ctrlp_user_command = 'find %s -type f'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
+" ----------------- PHP Configuration -----------------
+  " Put at the very end of your .vimrc file.
+
+  function! PhpSyntaxOverride()
+    hi! def link phpDocTags  phpDefine
+    hi! def link phpDocParam phpType
+  endfunction
+
+  augroup phpSyntaxOverride
+    autocmd!
+    autocmd FileType php call PhpSyntaxOverride()
+  augroup END
+
+
+" configuration for plugins 'Shougo/vimproc' 'Shougo/unite.vim' 'm2mdas/phpcomplete-extended'
+  autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
+  let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+
+  " console configuration http://sourabhbajaj.com/mac-setup/iTerm/README.html
